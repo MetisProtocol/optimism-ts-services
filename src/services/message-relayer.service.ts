@@ -17,11 +17,14 @@ import {
   fromHexString,
 } from '../utils'
 import { StateRootBatchHeader, SentMessage, SentMessageProof } from '../types'
+import { timingSafeEqual } from 'crypto'
 
 interface MessageRelayerOptions {
   // Providers for interacting with L1 and L2.
   l1RpcProvider: JsonRpcProvider
   l2RpcProvider: JsonRpcProvider
+  
+  l2ChainID: number
 
   // Address of the AddressManager contract, used to resolve the various addresses we'll need
   // within this service.
@@ -265,6 +268,7 @@ export class MessageRelayerService extends BaseService<MessageRelayerOptions> {
     // tslint:disable-next-line
     const event = this.state.eventCache.find((event) => {
       return (
+        event.args._chainId == this.options.l2ChainID &&
         event.args._prevTotalElements.toNumber() <= height &&
         event.args._prevTotalElements.toNumber() +
           event.args._batchSize.toNumber() >
@@ -328,7 +332,7 @@ export class MessageRelayerService extends BaseService<MessageRelayerOptions> {
     return events.map((event) => {
       const message = event.args.message
       const decoded = this.state.OVM_L2CrossDomainMessenger.interface.decodeFunctionData(
-        'relayMessage',
+        'relayMessageViaChainId',
         message
       )
 
@@ -426,6 +430,7 @@ export class MessageRelayerService extends BaseService<MessageRelayerOptions> {
     if (this.options.spreadsheetMode) {
       try {
         await this.options.spreadsheet.addRow({
+          chainId: this.options.l2ChainID,
           target: message.target,
           sender: message.sender,
           message: message.message,
@@ -458,7 +463,8 @@ export class MessageRelayerService extends BaseService<MessageRelayerOptions> {
 
         await this.state.OVM_L1CrossDomainMessenger.connect(
           this.options.l1Wallet
-        ).callStatic.relayMessage(
+        ).callStatic.relayMessageViaChainId(
+          this.options.l2ChainID,
           message.target,
           message.sender,
           message.message,
@@ -479,7 +485,8 @@ export class MessageRelayerService extends BaseService<MessageRelayerOptions> {
 
       const result = await this.state.OVM_L1CrossDomainMessenger.connect(
         this.options.l1Wallet
-      ).relayMessage(
+      ).relayMessageViaChainId(
+        this.options.l2ChainID,
         message.target,
         message.sender,
         message.message,

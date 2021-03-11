@@ -7,6 +7,7 @@ require('dotenv').config()
 
 const env = process.env
 const L2_NODE_WEB3_URL = env.L2_NODE_WEB3_URL
+const L2_NODE_CHAIN_ID = env.L2_NODE_CHAIN_ID
 const L1_NODE_WEB3_URL = env.L1_NODE_WEB3_URL
 const L1_WALLET_KEY = env.L1_WALLET_KEY
 const MNEMONIC = env.MNEMONIC
@@ -20,6 +21,9 @@ const L1_BLOCK_FINALITY = env.L1_BLOCK_FINALITY || '0'
 const FROM_L2_TRANSACTION_INDEX = env.FROM_L2_TRANSACTION_INDEX || '0'
 
 const main = async () => {
+  if (!L2_NODE_CHAIN_ID) {
+    throw new Error('Must pass L2_NODE_CHAIN_ID')
+  }
   const l2Provider = new JsonRpcProvider(L2_NODE_WEB3_URL)
   const l1Provider = new JsonRpcProvider(L1_NODE_WEB3_URL)
 
@@ -36,6 +40,7 @@ const main = async () => {
   const service = new FraudProverService({
     l1RpcProvider: l1Provider,
     l2RpcProvider: l2Provider,
+    l2ChainID: parseInt(L2_NODE_CHAIN_ID),
     l1Wallet: wallet,
     deployGasLimit: parseInt(RELAY_GAS_LIMIT, 10),
     pollingInterval: parseInt(POLLING_INTERVAL, 10),

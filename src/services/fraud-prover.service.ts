@@ -36,6 +36,7 @@ import {
 interface FraudProverOptions {
   l1RpcProvider: JsonRpcProvider
   l2RpcProvider: JsonRpcProvider
+  l2ChainID: number
   l1Wallet: Signer
   deployGasLimit: number
   runGasLimit: number

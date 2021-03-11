@@ -8,6 +8,7 @@ config()
 
 const env = process.env
 const L2_NODE_WEB3_URL = env.L2_NODE_WEB3_URL
+const L2_NODE_CHAIN_ID = env.L2_NODE_CHAIN_ID
 const L1_NODE_WEB3_URL = env.L1_NODE_WEB3_URL
 const ADDRESS_MANAGER_ADDRESS = env.ADDRESS_MANAGER_ADDRESS
 const L1_WALLET_KEY = env.L1_WALLET_KEY
@@ -36,6 +37,9 @@ const main = async () => {
   }
   if (!L2_NODE_WEB3_URL) {
     throw new Error('Must pass L2_NODE_WEB3_URL')
+  }
+  if (!L2_NODE_CHAIN_ID) {
+    throw new Error('Must pass L2_NODE_CHAIN_ID')
   }
   if (!L1_WALLET_KEY) {
     throw new Error('Must pass L1_WALLET_KEY')
@@ -75,6 +79,7 @@ const main = async () => {
   const service = new MessageRelayerService({
     l1RpcProvider: l1Provider,
     l2RpcProvider: l2Provider,
+    l2ChainID: parseInt(L2_NODE_CHAIN_ID),
     addressManagerAddress: ADDRESS_MANAGER_ADDRESS,
     l1Wallet: wallet,
     relayGasLimit: parseInt(RELAY_GAS_LIMIT, 10),
