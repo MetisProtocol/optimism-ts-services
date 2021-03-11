@@ -178,7 +178,8 @@ export class FraudProverService extends BaseService<FraudProverOptions> {
       this.state.OVM_CanonicalTransactionChain,
       this.state.OVM_ExecutionManager,
       this.options.l1StartOffset,
-      this.options.l1BlockFinality
+      this.options.l1BlockFinality,
+      this.options.l2ChainID
     )
 
     this.logger.info(

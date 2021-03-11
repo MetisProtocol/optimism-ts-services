@@ -332,7 +332,7 @@ export class MessageRelayerService extends BaseService<MessageRelayerOptions> {
     return events.map((event) => {
       const message = event.args.message
       const decoded = this.state.OVM_L2CrossDomainMessenger.interface.decodeFunctionData(
-        'relayMessageViaChainId',
+        'relayMessage',
         message
       )
 

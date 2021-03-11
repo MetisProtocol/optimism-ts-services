@@ -26,7 +26,8 @@ export class L1ProviderWrapper {
     public OVM_CanonicalTransactionChain: Contract,
     public OVM_ExecutionManager: Contract,
     public l1StartOffset: number,
-    public l1BlockFinality: number
+    public l1BlockFinality: number,
+    public l2ChainID: number
   ) {}
 
   public async findAllEvents(
@@ -336,6 +337,7 @@ export class L1ProviderWrapper {
 
     const matching = events.filter((event) => {
       return (
+        event.args._chainId == this.l2ChainID &&
         event.args._prevTotalElements.toNumber() <= index &&
         event.args._prevTotalElements.toNumber() +
           event.args._batchSize.toNumber() >
@@ -352,6 +354,7 @@ export class L1ProviderWrapper {
     for (const event of matching) {
       const wasDeleted = deletions.some((deletion) => {
         return (
+          deletion.args._chainId == this.l2ChainID &&
           deletion.blockNumber > event.blockNumber &&
           deletion.args._batchIndex.toNumber() ===
             event.args._batchIndex.toNumber()
@@ -391,6 +394,7 @@ export class L1ProviderWrapper {
     // tslint:disable-next-line
     const event = events.find((event) => {
       return (
+        event.args._chainId == this.l2ChainID &&
         event.args._prevTotalElements.toNumber() <= index &&
         event.args._prevTotalElements.toNumber() +
           event.args._batchSize.toNumber() >
@@ -413,6 +417,7 @@ export class L1ProviderWrapper {
       // tslint:disable-next-line
       const batchSubmissionEvent = batchSubmissionEvents.find((event) => {
         return (
+          event.args._chainId == this.l2ChainID &&
           event.args._startingQueueIndex.toNumber() <= index &&
           event.args._startingQueueIndex.toNumber() +
             event.args._totalElements.toNumber() >
