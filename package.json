@@ -17,7 +17,7 @@
     "clean": "rimraf build/"
   },
   "dependencies": {
-    "metiseth-optimism-contracts": "^1.0.0",
+    "metiseth-optimism-contracts": "^1.0.1",
     "@eth-optimism/core-utils": "0.1.9",
     "@ethersproject/hardware-wallets": "^5.0.12",
     "@ethersproject/keccak256": "^5.0.6",
