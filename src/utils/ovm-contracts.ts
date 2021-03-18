@@ -1,6 +1,6 @@
 import { Contract } from 'ethers'
 import { JsonRpcProvider } from '@ethersproject/providers'
-import { getContractInterface } from '@eth-optimism/contracts/build/src/contract-defs'
+import { getContractInterface } from 'metiseth-optimism-contracts/build/src/contract-defs'
 
 import { ZERO_ADDRESS } from './constants'
 
