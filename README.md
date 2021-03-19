@@ -7,6 +7,7 @@
 | -----------                 | --------- | -------------         | -----------           |
 | `L1_WALLET_KEY`             | Yes       | N/A                   | Private key for an account on Layer 1 (Ethereum) to be used to submit fraud proof transactions. |
 | `L2_NODE_WEB3_URL`          | No        | http://localhost:9545 | HTTP endpoint for a Layer 2 (Optimism) Verifier node.  |
+| `L2_NODE_CHAIN_ID`          | YES        | 0                    | Chain ID for a Layer 2 (Optimism) Verifier node.  |
 | `L1_NODE_WEB3_URL`          | No        | http://localhost:8545 | HTTP endpoint for a Layer 1 (Ethereum) node.      |
 | `RELAY_GAS_LIMIT`           | No        | 9,000,000             | Maximum amount of gas to provide to fraud proof transactions (except for the "transaction execution" step). |
 | `RUN_GAS_LIMIT`             | No        | 9,000,000             | Maximum amount of gas to provide to the "transaction execution" step. |
