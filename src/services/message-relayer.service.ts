@@ -283,10 +283,15 @@ export class MessageRelayerService extends BaseService<MessageRelayerOptions> {
       const [
         stateRoots,
       ] = this.state.OVM_StateCommitmentChain.interface.decodeFunctionData(
-        'appendStateBatch',
+        'appendStateBatchByChainId',
         transaction.data
       )
-
+      
+      //remove chain id because no need for caculate hash
+      const removedChainId=stateRoots.map((element) => {
+        console.log("decode appendStateBatchByChainId:"+element)
+        return '0x'+element.slice(2+64)
+      })
       return {
         batch: {
           batchIndex: event.args._batchIndex,
@@ -295,7 +300,7 @@ export class MessageRelayerService extends BaseService<MessageRelayerOptions> {
           prevTotalElements: event.args._prevTotalElements,
           extraData: event.args._extraData,
         },
-        stateRoots,
+        stateRoots:removedChainId,
       }
     }
 
