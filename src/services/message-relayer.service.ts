@@ -288,10 +288,14 @@ export class MessageRelayerService extends BaseService<MessageRelayerOptions> {
       )
       
       //remove chain id because no need for caculate hash
-      const removedChainId=stateRoots.map((element) => {
-        console.log("decode appendStateBatchByChainId:"+element)
-        return '0x'+element.slice(2+64)
-      })
+      var removedChainId:string[]=[]
+      var j=0
+      for(var i=0;i<stateRoots.lenght;i++){
+        const chainId=stateRoots[i].slice(2,2+64)
+        console.log("decode appendStateBatchByChainId:"+chainId+","+stateRoots[i])
+        if(chainId==this.options.l2ChainID)
+          removedChainId[j++]='0x'+stateRoots[i].slice(2+64)
+      }
       return {
         batch: {
           batchIndex: event.args._batchIndex,
