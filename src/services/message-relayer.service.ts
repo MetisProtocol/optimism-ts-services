@@ -17,7 +17,6 @@ import {
   fromHexString,
 } from '../utils'
 import { StateRootBatchHeader, SentMessage, SentMessageProof } from '../types'
-import { timingSafeEqual } from 'crypto'
 
 interface MessageRelayerOptions {
   // Providers for interacting with L1 and L2.
